@@ -215,17 +215,17 @@ def optimize(targetBRDF, measures, steps, keys, lr = 0.01):
         if param_clamp:
             for key in keys:
                 if 'metallic' in key:
-                    opt[key] = dr.clamp(opt[key],0.0,0.1)
+                    opt[key] = dr.clamp(opt[key],0.0,1.0)
                 elif 'roughness' in key:
-                    opt[key] = dr.clamp(opt[key],0.0,0.1)
+                    opt[key] = dr.clamp(opt[key],0.0,1.0)
                 elif 'clearcoat' in key:
-                    opt[key] = dr.clamp(opt[key],0.0,0.1)
+                    opt[key] = dr.clamp(opt[key],0.0,1.0)
                 elif 'specular' in key:
-                    opt[key] = dr.clamp(opt[key],0.0,0.1)
+                    opt[key] = dr.clamp(opt[key],0.0,1.0)
                 elif 'base_color' in key:
-                    pass
+                    opt[key] = dr.clamp(opt[key],0.0,1.0)
                 else:
-                    opt[key] = dr.clamp(opt[key],0.0,0.1)
+                    opt[key] = dr.clamp(opt[key],0.0,1.0)
 
         #errf_prev = lossf
         params.update(opt)
