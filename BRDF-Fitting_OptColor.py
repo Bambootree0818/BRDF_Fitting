@@ -52,7 +52,7 @@ keys = [
     'clearcoat.value',
     'clearcoat_gloss.value',    
 ]
-base_color_flag = True
+base_color_flag = False
 if base_color_flag:
     keys.append('base_color.value')
     
@@ -96,6 +96,7 @@ class Samples:
             #print(w[0][0])
         return mi.Vector3f(cp * st, sp * st, ct)
     
+    #正反射のベクトルを計算
     def calculate_specular_vec(self,wi_xyz, n = np.array([0,0,1])):
         dir = []
         d = dr.dot(n, wi_xyz) 
@@ -108,15 +109,38 @@ class Samples:
         specular_vec = xyz - wi_xyz; 
         return specular_vec
     
-    def loss(self,bsdf):
+    #loss関数
+    def loss(self, bsdf, all_lossFlag):
+        if all_lossFlag == True:
+            print("all")
+            return self.all_loss(bsdf)
+        else:
+            print("light")
+            return self.lightLoss(bsdf)
+    
+    #rgbloss関数
+    def all_loss(self,bsdf):
         values = createBRDFSample(bsdf, self.wi_xyz, self.wo_xyz)
         #print(self.rgb_ref_soa)
         #print(values)
         er = dr.sqr(self.rgb_ref_soa[0] - values[0])
         eg = dr.sqr(self.rgb_ref_soa[1] - values[1])
         eb = dr.sqr(self.rgb_ref_soa[2] - values[2])
-        loss = dr.sqrt(er + eg + eb)
+        cosWoSpecular = dr.dot(self.wo_xyz, self.specular_xyz)
+        loss = dr.sqrt(er + eg + eb) * cosWoSpecular
         return loss
+    
+    #loss関数（輝度のみ）
+    def lightLoss(self, bsdf):
+        values = createBRDFSample(bsdf,self.wi_xyz, self.wo_xyz)
+        illuminant_XYZ = np.array([0.31270, 0.32900])
+        xyz = colour.RGB_to_XYZ(values,RGB_COLOURSPACE_BT2020,illuminant_XYZ)
+        xyz_soa = colour.RGB_to_XYZ(self.rgb_ref_soa,RGB_COLOURSPACE_BT2020,illuminant_XYZ)
+        loss = dr.mean(dr.sqr(xyz_soa[1] - xyz[1]))
+        return loss
+
+    
+
     
 #BRDFのサンプルを作成
 def createBRDFSample(brdf,wi,wo):
@@ -152,11 +176,11 @@ def material_preview(opt_bsdf):
     plt.imshow(material_image ** (1.0 / 2.2))  # 画像を表示（sRGBトーンマッピングを近似）
     plt.show()  # 画像を表示
 
-losses = []
 def optimize(targetBRDF, measures, steps, keys, lr = 0.01):
     
     #オプティマイザーを定義
     opt = mi.ad.Adam(lr = lr)
+    errf_prev = 0.
     
     param_clamp = True
     
@@ -174,8 +198,16 @@ def optimize(targetBRDF, measures, steps, keys, lr = 0.01):
     for step in range(steps):
         
         #loss関数を計算
-        loss = measures.loss(targetBRDF)
-        losses.append(loss)
+        loss= 0.
+        print(base_color_flag)
+        loss = measures.loss(targetBRDF,base_color_flag)
+
+        penalty = 0
+        for key in keys:
+            penalty += dr.sqr(opt[key] - 0.5)
+        loss = loss + penalty
+        print(loss)
+        lossf = dr.sum(loss)[0] / len(loss)
         
         dr.backward(loss)
         
@@ -195,7 +227,7 @@ def optimize(targetBRDF, measures, steps, keys, lr = 0.01):
                 else:
                     opt[key] = dr.clamp(opt[key],0.0,0.1)
 
-        
+        #errf_prev = lossf
         params.update(opt)
         
         print('Iteration:', step)
@@ -203,8 +235,8 @@ def optimize(targetBRDF, measures, steps, keys, lr = 0.01):
             print(key,  opt[key])
         print("loss:", loss)
         print()
-
-    material_preview(params)
+    if base_color_flag == True:
+        material_preview(params)
     
     #b = []
     #for i in range(4):
@@ -216,12 +248,14 @@ def optimize(targetBRDF, measures, steps, keys, lr = 0.01):
     
             
 s = Samples(sample_data)
-a = s.wi_xyz
-b = s.specular_xyz
-print(a)
-print(b)
-#optimize(bsdf, s,1000,keys)
+#a = s.wi_xyz
+#b = s.specular_xyz
+#print(a)
+#print(b)
+optimize(bsdf, s,1000,keys)
 base_color_flag = True
+keys.append('base_color.value')
+optimize(bsdf, s,1000,keys)
 
 
 
