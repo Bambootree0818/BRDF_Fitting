@@ -48,7 +48,7 @@ bsdf = mi.load_dict({
 keys = [
     'metallic.value',
     'roughness.value',
-    'specular',
+    #'specular',
     'clearcoat.value',
     'clearcoat_gloss.value',    
 ]
@@ -68,6 +68,7 @@ class Samples:
         self.set_parameter() #パラメータをセット
         self.wi_xyz = self.sph_to_dir(self.wi_theta,self.wi_phi) #入射光を球面座標から三次元ベクトルに変換
         self.wo_xyz = self.sph_to_dir(self.wo_theta,self.wo_phi) #反射光を球面座標から三次元ベクトルに変換
+        self.specular_xyz = self.calculate_specular_vec(self.wi_xyz)
         #print(self.wi_xyz)
 
     #パラメータをセット
@@ -94,6 +95,18 @@ class Samples:
             #w.append(mi.Vector3f(cp * st, sp * st, ct))
             #print(w[0][0])
         return mi.Vector3f(cp * st, sp * st, ct)
+    
+    def calculate_specular_vec(self,wi_xyz, n = np.array([0,0,1])):
+        dir = []
+        d = dr.dot(n, wi_xyz) 
+        for i in range(len(d)):
+            h = 2 * n * d[i]
+            h_list = h.tolist()
+            for j in range(len(h_list)):
+                dir.append(h_list[j])
+        xyz = dr.unravel(dr.cuda.ad.Array3f, dr.cuda.ad.Float(dir))
+        specular_vec = xyz - wi_xyz; 
+        return specular_vec
     
     def loss(self,bsdf):
         values = createBRDFSample(bsdf, self.wi_xyz, self.wo_xyz)
@@ -203,9 +216,11 @@ def optimize(targetBRDF, measures, steps, keys, lr = 0.01):
     
             
 s = Samples(sample_data)
-#a = s.loss(bsdf)
-#print((a))
-optimize(bsdf, s,1000,keys)
+a = s.wi_xyz
+b = s.specular_xyz
+print(a)
+print(b)
+#optimize(bsdf, s,1000,keys)
 base_color_flag = True
 
 
