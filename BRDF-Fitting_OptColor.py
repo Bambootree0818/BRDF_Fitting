@@ -52,9 +52,7 @@ keys = [
     'clearcoat.value',
     'clearcoat_gloss.value',    
 ]
-base_color_flag = False
-if base_color_flag:
-    keys.append('base_color.value')
+base_color_flag = True
     
 class Samples:
 
@@ -202,12 +200,14 @@ def optimize(targetBRDF, measures, steps, keys, lr = 0.01):
         print(base_color_flag)
         loss = measures.loss(targetBRDF,base_color_flag)
 
+        '''
         penalty = 0
         for key in keys:
             penalty += dr.sqr(opt[key] - 0.5)
         loss = loss + penalty
         print(loss)
         lossf = dr.sum(loss)[0] / len(loss)
+        '''
         
         dr.backward(loss)
         
@@ -215,17 +215,17 @@ def optimize(targetBRDF, measures, steps, keys, lr = 0.01):
         if param_clamp:
             for key in keys:
                 if 'metallic' in key:
-                    opt[key] = dr.clamp(opt[key],0.0,0.1)
+                    opt[key] = dr.clamp(opt[key],0.0,0.99)
                 elif 'roughness' in key:
-                    opt[key] = dr.clamp(opt[key],0.0,0.1)
+                    opt[key] = dr.clamp(opt[key],0.0,0.99)
                 elif 'clearcoat' in key:
-                    opt[key] = dr.clamp(opt[key],0.0,0.1)
+                    opt[key] = dr.clamp(opt[key],0.0,0.99)
                 elif 'specular' in key:
-                    opt[key] = dr.clamp(opt[key],0.0,0.1)
+                    opt[key] = dr.clamp(opt[key],0.0,0.99)
                 elif 'base_color' in key:
-                    pass
+                    opt[key] = dr.clamp(opt[key],0.0,1.0)
                 else:
-                    opt[key] = dr.clamp(opt[key],0.0,0.1)
+                    opt[key] = dr.clamp(opt[key],0.0,0.99)
 
         #errf_prev = lossf
         params.update(opt)
@@ -253,7 +253,6 @@ s = Samples(sample_data)
 #print(a)
 #print(b)
 optimize(bsdf, s,1000,keys)
-base_color_flag = True
 keys.append('base_color.value')
 optimize(bsdf, s,1000,keys)
 
