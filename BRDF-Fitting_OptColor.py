@@ -31,17 +31,17 @@ bsdf = mi.load_dict({
     'type': 'principled',
     'base_color': {
             'type': 'rgb',
-            'value': [1.0,1.0,1.0]
+            'value': [0.8,0.0,0.0]
     },
-    'metallic': 0.0,
-    'specular': 0.0,
-    'roughness': 0.0,
+    'metallic': 0.5,
+    'specular': 0.5,
+    'roughness': 0.5,
     'spec_tint': 0.0,
     'anisotropic': 0.0,
     'sheen': 0.0,
     'sheen_tint': 0.0,
-    'clearcoat': 0.0,
-    'clearcoat_gloss': 0.0,
+    'clearcoat': 1.0,
+    'clearcoat_gloss': 1.0,
     'spec_trans': 0.0
 })
 
@@ -49,8 +49,12 @@ keys = [
     'metallic.value',
     'roughness.value',
     'specular',
+    #'spec_tint.value',
+    #'anisotropic.value',
+    #'sheen.value',
     'clearcoat.value',
-    'clearcoat_gloss.value',    
+    'clearcoat_gloss.value',  
+    #'spec_trans.value'  
 ]
 base_color_flag = False
     
@@ -125,8 +129,8 @@ class Samples:
         eg = dr.sqr(self.rgb_ref_soa[1] - values[1])
         eb = dr.sqr(self.rgb_ref_soa[2] - values[2])
         cosWoSpecular = dr.dot(self.wo_xyz, self.specular_xyz)
-        loss = dr.sqrt(er + eg + eb) #* cosWoSpecular
-        return loss
+        loss = dr.sqrt(er + eg + eb) * cosWoSpecular
+        return dr.mean(dr.mean(loss))
     
     #loss関数（輝度のみ）
     def lightLoss(self, bsdf):
@@ -159,8 +163,10 @@ def material_preview(opt_bsdf):
             mtParams["bsdf-matpreview.clearcoat_gloss.value"] = opt_bsdf[key]
         elif 'specular' in key:
             mtParams["bsdf-matpreview.specular"] = opt_bsdf[key]
-        elif 'base_color' in key:
-            mtParams["bsdf-matpreview.base_color.value"] = opt_bsdf[key]
+        #elif 'base_color' in key:
+            #mtParams["bsdf-matpreview.base_color.value"] = opt_bsdf[key]
+        #else:
+            #mtParams["bsdf-matpreview." + key] = opt_bsdf[key]
     
         
     mtParams.update()
@@ -172,7 +178,7 @@ def material_preview(opt_bsdf):
     plt.imshow(material_image ** (1.0 / 2.2))  # 画像を表示（sRGBトーンマッピングを近似）
     plt.show()  # 画像を表示
 
-def optimize(targetBRDF, measures, steps, keys, lr = 0.01):
+def optimize(targetBRDF, measures, steps, keys, lr = 0.001):
     
     #オプティマイザーを定義
     opt = mi.ad.Adam(lr = lr)
@@ -201,10 +207,10 @@ def optimize(targetBRDF, measures, steps, keys, lr = 0.01):
         
         penalty = 0
         for key in keys:
-            penalty += dr.sqr(opt[key] - 0.5)
+            penalty += dr.sqr(opt[key] - 0.4)
         loss = loss + penalty
         #print(loss)
-        lossf = dr.sum(loss)[0] / len(loss)
+        #lossf = dr.sum(loss)[0] / len(loss)
         
         dr.backward(loss)
         
@@ -212,14 +218,14 @@ def optimize(targetBRDF, measures, steps, keys, lr = 0.01):
         if param_clamp:
             for key in keys:
                 if 'metallic' in key:
-                    opt[key] = dr.clamp(opt[key],0.0,1.0)
-                    #pass
+                    #opt[key] = dr.clamp(opt[key],0.0,1.0)
+                    pass
                 elif 'roughness' in key:
-                    opt[key] = dr.clamp(opt[key],0.0,1.0)
-                    #pass
+                    #opt[key] = dr.clamp(opt[key],0.0,1.0)
+                    pass
                 elif 'clearcoat' in key:
-                    opt[key] = dr.clamp(opt[key],0.0,1.0)
-                    #pass
+                    #opt[key] = dr.clamp(opt[key],0.0,1.0)
+                    pass
                 elif 'specular' in key:
                     opt[key] = dr.clamp(opt[key],0.0,1.0)
                     #pass
@@ -237,8 +243,8 @@ def optimize(targetBRDF, measures, steps, keys, lr = 0.01):
             print(key,  opt[key])
         print("loss:", loss)
         print()
-    if base_color_flag == True:
-        material_preview(params)
+        
+    material_preview(params)
     
     #b = []
     #for i in range(4):
@@ -254,10 +260,10 @@ s = Samples(sample_data)
 #b = s.specular_xyz
 #print(a)
 #print(b)
-optimize(bsdf, s,1000,keys)
+#optimize(bsdf, s,1000,keys)
 base_color_flag = True
 keys.append('base_color.value')
-optimize(bsdf, s,1000,keys)
+optimize(bsdf, s,2000,keys)
 
 
 
