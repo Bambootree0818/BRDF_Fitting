@@ -46,6 +46,7 @@ bsdf = mi.load_dict({
 })
 
 keys = [
+    'base_color.value',
     'metallic.value',
     'roughness.value',
     'specular',
@@ -149,40 +150,38 @@ def createBRDFSample(brdf,wi,wo):
     return values
 
 #マテリアルプレビュー
-def material_preview(opt_bsdf):
-    scene = mi.load_file("scene.xml")
-    mtParams = mi.traverse(scene)
+def material_preview(opt_bsdf, scene_params):
     for key in keys:
         if 'metallic' in key:
-            mtParams["bsdf-matpreview.metallic.value"] = opt_bsdf[key]
+            scene_params["bsdf-matpreview.metallic.value"] = opt_bsdf[key]
         elif 'roughness' in key:
-            mtParams["bsdf-matpreview.roughness.value"] = opt_bsdf[key]
+            scene_params["bsdf-matpreview.roughness.value"] = opt_bsdf[key]
         elif 'clearcoat.value' in key:
-            mtParams["bsdf-matpreview.clearcoat.value"] = opt_bsdf[key]
+            scene_params["bsdf-matpreview.clearcoat.value"] = opt_bsdf[key]
         elif 'clearcoat_gloss.value' in key:
-            mtParams["bsdf-matpreview.clearcoat_gloss.value"] = opt_bsdf[key]
+            scene_params["bsdf-matpreview.clearcoat_gloss.value"] = opt_bsdf[key]
         elif 'specular' in key:
-            mtParams["bsdf-matpreview.specular"] = opt_bsdf[key]
-        #elif 'base_color' in key:
-            #mtParams["bsdf-matpreview.base_color.value"] = opt_bsdf[key]
+            scene_params["bsdf-matpreview.specular"] = opt_bsdf[key]
+        elif 'base_color' in key:
+            scene_params["bsdf-matpreview.base_color.value"] = opt_bsdf[key]
         #else:
             #mtParams["bsdf-matpreview." + key] = opt_bsdf[key]
-    
         
-    mtParams.update()
-    material_image = mi.render(scene,spp = 516)
+    scene_params.update()
+    material_image = mi.render(scene,scene_params,spp = 516)
+    print(type(material_image))
     mi.util.convert_to_bitmap(material_image)
-
+    
     # matplotlibの設定と画像表示
     plt.axis("off")  # 軸を非表示
     plt.imshow(material_image ** (1.0 / 2.2))  # 画像を表示（sRGBトーンマッピングを近似）
     plt.show()  # 画像を表示
 
-def optimize(targetBRDF, measures, steps, keys, lr = 0.001):
+def optimize(targetBRDF, measures, scene_params, steps, keys, lr = 0.001):
     
     #オプティマイザーを定義
     opt = mi.ad.Adam(lr = lr)
-    errf_prev = 0.
+    #errf_prev = 0.
     
     param_clamp = True
     
@@ -207,7 +206,7 @@ def optimize(targetBRDF, measures, steps, keys, lr = 0.001):
         
         penalty = 0
         for key in keys:
-            penalty += dr.sqr(opt[key] - 0.4)
+            penalty += dr.sqr(opt[key] - 0.3)
         loss = loss + penalty
         #print(loss)
         #lossf = dr.sum(loss)[0] / len(loss)
@@ -244,7 +243,7 @@ def optimize(targetBRDF, measures, steps, keys, lr = 0.001):
         print("loss:", loss)
         print()
         
-    material_preview(params)
+    material_preview(params, scene_params)
     
     #b = []
     #for i in range(4):
@@ -254,19 +253,62 @@ def optimize(targetBRDF, measures, steps, keys, lr = 0.001):
     #srgb = mi.cuda_ad_spectral.spectrum_to_xyz(values=b,wavelengths=w)
     #print(b)
     
-            
+
+scene = mi.load_file("scene.xml")
+#シーンをトラバースし、最適化パラメータをリストアップ
+scene_params = mi.traverse(scene)
+
+#測定データクラスのインスタンスを作成
 s = Samples(sample_data)
-#a = s.wi_xyz
-#b = s.specular_xyz
-#print(a)
-#print(b)
-#optimize(bsdf, s,1000,keys)
+
 base_color_flag = True
-keys.append('base_color.value')
-optimize(bsdf, s,2000,keys)
+optimize(bsdf, s, scene_params,2000,keys)
+
+#base_colorの最適化
+def optimize_bc(scene_params, steps, lr = 0.01):
+    
+    bitmap_ref = mi.Bitmap('C4_Blue_ref.jpg').convert(mi.Bitmap.PixelFormat.RGB, mi.Struct.Type.Float32, srgb_gamma=False)
+    image_ref = np.array(bitmap_ref).flatten()
+    print(image_ref)
+    
+    #scene_params.keep(["bsdf-matpreview.base_color.value"])
+    
+    opt = mi.ad.Adam(lr = lr)
+    
+    #初期値のセット
+    opt["bsdf-matpreview.base_color.value"] = scene_params["bsdf-matpreview.base_color.value"]
+    scene_params.update(opt)
+    
+    for step in range(steps):
+        
+        image = mi.render(scene, scene_params, spp=4)
+        
+        loss = dr.mean(dr.sqr(image - image_ref))
+        
+        dr.backward(loss)
+        
+        opt.step()
+        
+        opt["bsdf-matpreview.base_color.value"] = dr.clamp(opt["bsdf-matpreview.base_color.value"], 0.0, 1.0)
+        
+        scene_params.update(opt)
+        
+        print('Iteration:', step)
+        print("bsdf-matpreview.base_color.value",  opt["bsdf-matpreview.base_color.value"])
+        print("loss:", loss)
+        print()
+        
+    scene_params.update(opt)
+    
+    image_final = mi.render(scene, spp=512)
+    mi.util.convert_to_bitmap(image_final)
+
+    # matplotlibの設定と画像表示
+    plt.axis("off")  # 軸を非表示
+    plt.imshow(image_final ** (1.0 / 2.2))  # 画像を表示（sRGBトーンマッピングを近似）
+    plt.show()  # 画像を表示
+    
 
 
-
-
-
+optimize_bc(scene_params, 100)
 

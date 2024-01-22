@@ -1,17 +1,19 @@
 import mitsuba as mi  # Mitsuba 3D rendering frameworkをインポート
 import drjit as dr  # 数値計算と自動微分をサポートするDr.Jitをインポート
 import matplotlib.pyplot as plt  # グラフや画像表示用のmatplotlibをインポート
+import numpy as np
 
 sv = mi.variants()  # 利用可能なMitsubaのバリアントを表示
 print(sv)
 
-mi.set_variant("cuda_ad_spectral")  # CUDAを使った自動微分とRGB色空間をサポートするバリアントを設定
+mi.set_variant("cuda_ad_rgb")  # CUDAを使った自動微分とRGB色空間をサポートするバリアントを設定
 
 # XMLファイルからシーンをロード。解像度と積分器を設定
-scene = mi.load_file("C:/Users/sasaki_takaya/Documents/mitsuba/scenes/cbox.xml",res=128, integrator='prb')
+scene = mi.load_file("C:/Users/sasaki_takaya/Documents/mitsuba/scenes/cbox.xml",res=512, integrator='prb')
 
 # 参照用の画像をレンダリング（samples per pixel = 512）
-image_ref=  mi.render(scene,spp = 512)
+bitmap_ref = mi.Bitmap('C3_Red_ref.jpg').convert(mi.Bitmap.PixelFormat.RGB, mi.Struct.Type.Float32, srgb_gamma=False)
+image_ref = np.array(bitmap_ref).flatten()
 
 params=  mi.traverse(scene)  # シーンの全パラメータを取得
 key = 'red.reflectance.value'  # 最適化するパラメータを指定

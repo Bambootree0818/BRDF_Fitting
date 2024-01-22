@@ -1,6 +1,6 @@
 <scene version="3.0.0">
     <default name="spp" value="64"/>
-    <default name="width" value="683"/>
+    <default name="width" value="512"/>
     <default name="height" value="512"/>
     <default name="max_depth" value="-1"/>
 
