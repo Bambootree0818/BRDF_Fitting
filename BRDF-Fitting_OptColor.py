@@ -33,26 +33,26 @@ bsdf = mi.load_dict({
             'type': 'rgb',
             'value': [1.0,1.0,1.0]
     },
-    'metallic': 1.0,
-    'specular': 1.0,
-    'roughness': 1.0,
+    'metallic': 0.0,
+    'specular': 0.0,
+    'roughness': 0.0,
     'spec_tint': 0.0,
     'anisotropic': 0.0,
     'sheen': 0.0,
     'sheen_tint': 0.0,
-    'clearcoat': 1.0,
-    'clearcoat_gloss': 1.0,
+    'clearcoat': 0.0,
+    'clearcoat_gloss': 0.0,
     'spec_trans': 0.0
 })
 
 keys = [
     'metallic.value',
     'roughness.value',
-    #'specular',
+    'specular',
     'clearcoat.value',
     'clearcoat_gloss.value',    
 ]
-base_color_flag = True
+base_color_flag = False
     
 class Samples:
 
@@ -110,10 +110,10 @@ class Samples:
     #loss関数
     def loss(self, bsdf, all_lossFlag):
         if all_lossFlag == True:
-            print("all")
+            #print("all")
             return self.all_loss(bsdf)
         else:
-            print("light")
+            #print("light")
             return self.lightLoss(bsdf)
     
     #rgbloss関数
@@ -125,7 +125,7 @@ class Samples:
         eg = dr.sqr(self.rgb_ref_soa[1] - values[1])
         eb = dr.sqr(self.rgb_ref_soa[2] - values[2])
         cosWoSpecular = dr.dot(self.wo_xyz, self.specular_xyz)
-        loss = dr.sqrt(er + eg + eb) * cosWoSpecular
+        loss = dr.sqrt(er + eg + eb) #* cosWoSpecular
         return loss
     
     #loss関数（輝度のみ）
@@ -136,9 +136,6 @@ class Samples:
         xyz_soa = colour.RGB_to_XYZ(self.rgb_ref_soa,RGB_COLOURSPACE_BT2020,illuminant_XYZ)
         loss = dr.mean(dr.sqr(xyz_soa[1] - xyz[1]))
         return loss
-
-    
-
     
 #BRDFのサンプルを作成
 def createBRDFSample(brdf,wi,wo):
@@ -164,6 +161,7 @@ def material_preview(opt_bsdf):
             mtParams["bsdf-matpreview.specular"] = opt_bsdf[key]
         elif 'base_color' in key:
             mtParams["bsdf-matpreview.base_color.value"] = opt_bsdf[key]
+    
         
     mtParams.update()
     material_image = mi.render(scene,spp = 516)
@@ -197,17 +195,16 @@ def optimize(targetBRDF, measures, steps, keys, lr = 0.01):
         
         #loss関数を計算
         loss= 0.
-        print(base_color_flag)
+        #print(base_color_flag)
         loss = measures.loss(targetBRDF,base_color_flag)
 
-        '''
+        
         penalty = 0
         for key in keys:
             penalty += dr.sqr(opt[key] - 0.5)
         loss = loss + penalty
-        print(loss)
+        #print(loss)
         lossf = dr.sum(loss)[0] / len(loss)
-        '''
         
         dr.backward(loss)
         
@@ -215,17 +212,22 @@ def optimize(targetBRDF, measures, steps, keys, lr = 0.01):
         if param_clamp:
             for key in keys:
                 if 'metallic' in key:
-                    opt[key] = dr.clamp(opt[key],0.0,0.99)
+                    opt[key] = dr.clamp(opt[key],0.0,1.0)
+                    #pass
                 elif 'roughness' in key:
-                    opt[key] = dr.clamp(opt[key],0.0,0.99)
+                    opt[key] = dr.clamp(opt[key],0.0,1.0)
+                    #pass
                 elif 'clearcoat' in key:
-                    opt[key] = dr.clamp(opt[key],0.0,0.99)
+                    opt[key] = dr.clamp(opt[key],0.0,1.0)
+                    #pass
                 elif 'specular' in key:
-                    opt[key] = dr.clamp(opt[key],0.0,0.99)
+                    opt[key] = dr.clamp(opt[key],0.0,1.0)
+                    #pass
                 elif 'base_color' in key:
                     opt[key] = dr.clamp(opt[key],0.0,1.0)
+                    #pass
                 else:
-                    opt[key] = dr.clamp(opt[key],0.0,0.99)
+                    opt[key] = dr.clamp(opt[key],0.0,1.0)
 
         #errf_prev = lossf
         params.update(opt)
@@ -253,6 +255,7 @@ s = Samples(sample_data)
 #print(a)
 #print(b)
 optimize(bsdf, s,1000,keys)
+base_color_flag = True
 keys.append('base_color.value')
 optimize(bsdf, s,1000,keys)
 
