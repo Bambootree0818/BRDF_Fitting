@@ -19,10 +19,11 @@ print(mi.variant())
 def read_sample(file_path):
     with open(file_path, 'r') as file:
         data = file.readlines()
-    data_list = [line.strip().split(',') for line in data if line.strip()]
+    data_list = [line.strip().split(',') for line in data[14:] if line.strip()]
     return data_list
 
-file_path = 'TestData.txt' #データパスの指定
+file_name = input('file name : ')
+file_path = 'measures/' + file_name + '.astm'  #データパスの指定
 sample_data = read_sample(file_path)
 #print(data[0][4])
 
@@ -272,7 +273,7 @@ def mse_image(image, image_ref):
 #base_colorの最適化
 def optimize_bc(scene_params, steps, lr = 0.01):
     
-    bitmap_ref = mi.Bitmap('C4_Yellow_ref.jpg').convert(mi.Bitmap.PixelFormat.RGB, mi.Struct.Type.Float32, srgb_gamma=False)
+    bitmap_ref = mi.Bitmap('basecolor_ref/'+ file_name + '_ref.jpg').convert(mi.Bitmap.PixelFormat.RGB, mi.Struct.Type.Float32, srgb_gamma=False)
     image_ref = np.array(bitmap_ref)
     image_ref = dr.cuda.ad.TensorXf(image_ref)
     
@@ -312,7 +313,7 @@ def optimize_bc(scene_params, steps, lr = 0.01):
     plt.imshow(image_final ** (1.0 / 2.2))  # 画像を表示（sRGBトーンマッピングを近似）
     plt.show()  # 画像を表示
     
-    mi.util.write_bitmap("Fitting_Results/C4_Yellow.png", image_final)
+    mi.util.write_bitmap("Fitting_Results/" + file_name + ".png", image_final)
     
 optimize_bc(scene_params, 120)
 
