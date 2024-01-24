@@ -44,7 +44,7 @@ for it in range(iteration_count):  # 最適化ループ開始
     image = mi.render(scene, params, spp=4)  # 現在のパラメータでシーンをレンダリング
 
     loss = mse(image)  # 損失関数（MSE）の計算
-    print(type(loss))
+    #print(type(loss))
     dr.backward(loss)  # 自動微分を用いた勾配の計算
 
     opt.step()  # 勾配降下法によるパラメータの更新
@@ -70,4 +70,4 @@ plt.axis("off")  # 軸を非表示
 plt.imshow(image_final ** (1.0 / 2.2))  # 画像を表示（sRGBトーンマッピングを近似）
 plt.show()  # 画像を表示
 
-
+#mi.util.write_bitmap("Fitting_Results/C4_Yellow.png", image)

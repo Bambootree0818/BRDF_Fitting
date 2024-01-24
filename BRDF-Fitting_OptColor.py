@@ -264,26 +264,30 @@ s = Samples(sample_data)
 base_color_flag = True
 optimize(bsdf, s, scene_params,2000,keys)
 
+#画像と参照画像との間の平均二乗誤差を計算する関数
+def mse_image(image, image_ref):
+    #print(dr.mean(dr.sqr(image - image_ref)))
+    return dr.mean(dr.sqr(image - image_ref))
+
 #base_colorの最適化
 def optimize_bc(scene_params, steps, lr = 0.01):
     
-    bitmap_ref = mi.Bitmap('C4_Blue_ref.jpg').convert(mi.Bitmap.PixelFormat.RGB, mi.Struct.Type.Float32, srgb_gamma=False)
-    image_ref = np.array(bitmap_ref).flatten()
-    print(image_ref)
-    
-    #scene_params.keep(["bsdf-matpreview.base_color.value"])
+    bitmap_ref = mi.Bitmap('C4_Yellow_ref.jpg').convert(mi.Bitmap.PixelFormat.RGB, mi.Struct.Type.Float32, srgb_gamma=False)
+    image_ref = np.array(bitmap_ref)
+    image_ref = dr.cuda.ad.TensorXf(image_ref)
     
     opt = mi.ad.Adam(lr = lr)
     
     #初期値のセット
     opt["bsdf-matpreview.base_color.value"] = scene_params["bsdf-matpreview.base_color.value"]
+    #scene_params.keep(["bsdf-matpreview.base_color.value"])
     scene_params.update(opt)
     
     for step in range(steps):
         
         image = mi.render(scene, scene_params, spp=4)
         
-        loss = dr.mean(dr.sqr(image - image_ref))
+        loss = mse_image(image, image_ref)
         
         dr.backward(loss)
         
@@ -298,7 +302,7 @@ def optimize_bc(scene_params, steps, lr = 0.01):
         print("loss:", loss)
         print()
         
-    scene_params.update(opt)
+    #scene_params.update(opt)
     
     image_final = mi.render(scene, spp=512)
     mi.util.convert_to_bitmap(image_final)
@@ -308,7 +312,7 @@ def optimize_bc(scene_params, steps, lr = 0.01):
     plt.imshow(image_final ** (1.0 / 2.2))  # 画像を表示（sRGBトーンマッピングを近似）
     plt.show()  # 画像を表示
     
-
-
-optimize_bc(scene_params, 100)
+    mi.util.write_bitmap("Fitting_Results/C4_Yellow.png", image_final)
+    
+optimize_bc(scene_params, 120)
 
