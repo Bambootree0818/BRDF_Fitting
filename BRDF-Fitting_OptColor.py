@@ -274,8 +274,7 @@ def mse_image(image, image_ref):
 def optimize_bc(scene_params, steps, lr = 0.01):
     
     bitmap_ref = mi.Bitmap('basecolor_ref/'+ file_name + '_ref.jpg').convert(mi.Bitmap.PixelFormat.RGB, mi.Struct.Type.Float32, srgb_gamma=False)
-    image_ref = np.array(bitmap_ref)
-    image_ref = dr.cuda.ad.TensorXf(image_ref)
+    image_ref = dr.cuda.ad.TensorXf(bitmap_ref)
     
     opt = mi.ad.Adam(lr = lr)
     
@@ -315,5 +314,5 @@ def optimize_bc(scene_params, steps, lr = 0.01):
     
     mi.util.write_bitmap("Fitting_Results/" + file_name + ".png", image_final)
     
-optimize_bc(scene_params, 120)
+optimize_bc(scene_params, 100)
 

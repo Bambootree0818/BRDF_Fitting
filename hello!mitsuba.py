@@ -8,15 +8,21 @@ print(sv)
 
 mi.set_variant("cuda_ad_rgb")  # CUDAを使った自動微分とRGB色空間をサポートするバリアントを設定
 
+scene = mi.load_file("C:/Users/sasaki_takaya/Documents/mitsuba/scenes/cbox.xml", res=512, integrator='prb')
 # XMLファイルからシーンをロード。解像度と積分器を設定
-scene = mi.load_file("C:/Users/sasaki_takaya/Documents/mitsuba/scenes/cbox.xml",res=512, integrator='prb')
+#scene = mi.load_file("scene.xml")
 
 # 参照用の画像をレンダリング（samples per pixel = 512）
-bitmap_ref = mi.Bitmap('C3_Red_ref.jpg').convert(mi.Bitmap.PixelFormat.RGB, mi.Struct.Type.Float32, srgb_gamma=False)
-image_ref = np.array(bitmap_ref).flatten()
+bitmap_ref = mi.Bitmap('basecolor_ref/C3_Red_ref.jpg').convert(mi.Bitmap.PixelFormat.RGB, mi.Struct.Type.Float32, srgb_gamma=False)
+#image_ref = np.array(bitmap_ref)
+image_ref = mi.TensorXf(bitmap_ref)
 
-params=  mi.traverse(scene)  # シーンの全パラメータを取得
-key = 'red.reflectance.value'  # 最適化するパラメータを指定
+params=  mi.traverse(scene)  # シーンの全パラメータを取得s
+
+#key = "bsdf-diffuse.reflectance.value"  # 最適化するパラメータを指定
+key = 'red.reflectance.value'
+params.keep(key)
+params.update()
 
 param_ref = mi.Color3f(params[key])  # 最適化前のパラメータ値を保持
 
