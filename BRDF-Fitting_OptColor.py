@@ -207,7 +207,7 @@ def optimize(targetBRDF, measures, scene_params, steps, keys, lr = 0.001):
         
         penalty = 0
         for key in keys:
-            penalty += dr.sqr(opt[key] - 0.3)
+            penalty += dr.sqr(opt[key] - 0.5)
         loss = loss + penalty
         #print(loss)
         #lossf = dr.sum(loss)[0] / len(loss)
@@ -255,7 +255,7 @@ def optimize(targetBRDF, measures, scene_params, steps, keys, lr = 0.001):
     #print(b)
     
 
-scene = mi.load_file("scene.xml")
+scene = mi.load_file("Material-Ball.xml")
 #シーンをトラバースし、最適化パラメータをリストアップ
 scene_params = mi.traverse(scene)
 
@@ -279,7 +279,7 @@ def optimize_bc(scene_params, steps, lr = 0.01):
     opt = mi.ad.Adam(lr = lr)
     
     #初期値のセット
-    opt["bsdf-matpreview.base_color.value"] = scene_params["bsdf-matpreview.base_color.value"]
+    opt['bsdf-matpreview.base_color.value'] = scene_params['bsdf-matpreview.base_color.value']
     #scene_params.keep(["bsdf-matpreview.base_color.value"])
     scene_params.update(opt)
     
@@ -293,12 +293,12 @@ def optimize_bc(scene_params, steps, lr = 0.01):
         
         opt.step()
         
-        opt["bsdf-matpreview.base_color.value"] = dr.clamp(opt["bsdf-matpreview.base_color.value"], 0.0, 1.0)
+        opt['bsdf-matpreview.base_color.value'] = dr.clamp(opt['bsdf-matpreview.base_color.value'], 0.0, 1.0)
         
         scene_params.update(opt)
         
         print('Iteration:', step)
-        print("bsdf-matpreview.base_color.value",  opt["bsdf-matpreview.base_color.value"])
+        print('bsdf-matpreview.base_color.value',  opt['bsdf-matpreview.base_color.value'])
         print("loss:", loss)
         print()
         
@@ -314,5 +314,5 @@ def optimize_bc(scene_params, steps, lr = 0.01):
     
     mi.util.write_bitmap("Fitting_Results/" + file_name + ".png", image_final)
     
-optimize_bc(scene_params, 100)
+optimize_bc(scene_params, 70)
 

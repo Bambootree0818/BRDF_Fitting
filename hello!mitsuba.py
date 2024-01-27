@@ -8,19 +8,22 @@ print(sv)
 
 mi.set_variant("cuda_ad_rgb")  # CUDAを使った自動微分とRGB色空間をサポートするバリアントを設定
 
-scene = mi.load_file("C:/Users/sasaki_takaya/Documents/mitsuba/scenes/cbox.xml", res=512, integrator='prb')
+#scene = mi.load_file("C:/Users/sasaki_takaya/Documents/mitsuba/scenes/cbox.xml", res=512, integrator='prb')
 # XMLファイルからシーンをロード。解像度と積分器を設定
-#scene = mi.load_file("scene.xml")
+#scene = mi.load_file("C:/Users/sasaki_takaya/Documents/mitsuba/matpreview/scene.xml", width = 512)
+scene = mi.load_file("Material-Ball.xml")
 
 # 参照用の画像をレンダリング（samples per pixel = 512）
 bitmap_ref = mi.Bitmap('basecolor_ref/C3_Red_ref.jpg').convert(mi.Bitmap.PixelFormat.RGB, mi.Struct.Type.Float32, srgb_gamma=False)
 #image_ref = np.array(bitmap_ref)
 image_ref = mi.TensorXf(bitmap_ref)
 
-params=  mi.traverse(scene)  # シーンの全パラメータを取得s
+params=  mi.traverse(scene)  # シーンの全パラメータを取得
+print(params)
 
 #key = "bsdf-diffuse.reflectance.value"  # 最適化するパラメータを指定
-key = 'red.reflectance.value'
+#key = 'red.reflectance.value'
+key = 'bsdf-matpreview.base_color.value'
 params.keep(key)
 params.update()
 
