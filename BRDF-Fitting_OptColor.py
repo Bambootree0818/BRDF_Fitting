@@ -207,7 +207,7 @@ def optimize(targetBRDF, measures, scene_params, steps, keys, lr = 0.001):
         
         penalty = 0
         for key in keys:
-            penalty += dr.sqr(opt[key] - 0.5)
+            penalty += dr.sqr(opt[key] - 0.35)
         loss = loss + penalty
         #print(loss)
         #lossf = dr.sum(loss)[0] / len(loss)
@@ -273,7 +273,7 @@ def mse_image(image, image_ref):
 #base_colorの最適化
 def optimize_bc(scene_params, steps, lr = 0.01):
     
-    bitmap_ref = mi.Bitmap('basecolor_ref/'+ file_name + '_ref.jpg').convert(mi.Bitmap.PixelFormat.RGB, mi.Struct.Type.Float32, srgb_gamma=False)
+    bitmap_ref = mi.Bitmap('basecolor_ref_another/'+ file_name + '_ref.png').convert(mi.Bitmap.PixelFormat.RGB, mi.Struct.Type.Float32, srgb_gamma=False)
     image_ref = dr.cuda.ad.TensorXf(bitmap_ref)
     
     opt = mi.ad.Adam(lr = lr)
@@ -312,7 +312,7 @@ def optimize_bc(scene_params, steps, lr = 0.01):
     plt.imshow(image_final ** (1.0 / 2.2))  # 画像を表示（sRGBトーンマッピングを近似）
     plt.show()  # 画像を表示
     
-    mi.util.write_bitmap("Fitting_Results/" + file_name + ".png", image_final)
+    mi.util.write_bitmap("Fitting_Results_another/" + file_name + ".png", image_final)
     
 optimize_bc(scene_params, 70)
 
