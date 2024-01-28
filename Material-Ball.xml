@@ -19,10 +19,10 @@
 		<float name="near_clip" value="0.100000"/>
 		<float name="far_clip" value="1000.000000"/>
 		<transform name="to_world">
-			<rotate x="1" angle="-160.75406189023448"/>
+			<rotate x="1" angle="-152.75406189023448"/>
 			<rotate y="1" angle="4.7290172443536365e-06"/>
 			<rotate z="1" angle="-180.00000500895632"/>
-			<translate value="0.000000 5.554805 7.708368"/>
+			<translate value="0.000000 6.554805 7.708368"/>
 		</transform>
 		<sampler type="independent" name="sampler">
 			<integer name="sample_count" value="$spp"/>

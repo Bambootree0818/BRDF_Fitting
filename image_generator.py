@@ -5,6 +5,8 @@ import numpy as np
 height = 512
 width = 512
 blank = np.zeros((height, width, 3))
-blank += [158,2,6][::-1] #RGBで青指定
+blank += [144,41,6][::-1] #RGBで青指定
+
+file_name = input('file name : ')
  
-cv2.imwrite('basecolor_ref_another/C3_Red_ref.png',blank)
+cv2.imwrite('basecolor_ref_another/' + file_name + '_ref.png',blank)

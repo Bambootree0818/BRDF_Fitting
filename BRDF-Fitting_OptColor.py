@@ -164,13 +164,13 @@ def material_preview(opt_bsdf, scene_params):
         elif 'specular' in key:
             scene_params["bsdf-matpreview.specular"] = opt_bsdf[key]
         elif 'base_color' in key:
-            scene_params["bsdf-matpreview.base_color.value"] = opt_bsdf[key]
+            scene_params["bsdf-matpreview.base_color.value"] = [0.0, 0.02518685962736163, 0.4178850708481375]
         #else:
             #mtParams["bsdf-matpreview." + key] = opt_bsdf[key]
         
     scene_params.update()
     material_image = mi.render(scene,scene_params,spp = 516)
-    print(type(material_image))
+    print(scene_params)
     mi.util.convert_to_bitmap(material_image)
     
     # matplotlibの設定と画像表示
@@ -207,7 +207,7 @@ def optimize(targetBRDF, measures, scene_params, steps, keys, lr = 0.001):
         
         penalty = 0
         for key in keys:
-            penalty += dr.sqr(opt[key] - 0.35)
+            penalty += dr.sqr(opt[key] - 0.3)
         loss = loss + penalty
         #print(loss)
         #lossf = dr.sum(loss)[0] / len(loss)
@@ -263,7 +263,7 @@ scene_params = mi.traverse(scene)
 s = Samples(sample_data)
 
 base_color_flag = True
-optimize(bsdf, s, scene_params,2000,keys)
+optimize(bsdf, s, scene_params,3000,keys)
 
 #画像と参照画像との間の平均二乗誤差を計算する関数
 def mse_image(image, image_ref):
@@ -314,5 +314,5 @@ def optimize_bc(scene_params, steps, lr = 0.01):
     
     mi.util.write_bitmap("Fitting_Results_another/" + file_name + ".png", image_final)
     
-optimize_bc(scene_params, 70)
+#optimize_bc(scene_params, 120)
 
