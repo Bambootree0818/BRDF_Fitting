@@ -6,6 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import colour as colour
 from colour.models import RGB_COLOURSPACE_BT2020
+import sys
 
 #利用可能なバリアントを表示
 variants = mi.variants()
@@ -22,10 +23,15 @@ def read_sample(file_path):
     data_list = [line.strip().split(',') for line in data[14:] if line.strip()]
     return data_list
 
-file_name = input('file name : ')
+#file_name = input('file name : ')
+file_name = sys.argv[1]
 file_path = 'measures/' + file_name + '.astm'  #データパスの指定
 sample_data = read_sample(file_path)
 #print(data[0][4])
+
+measure_rgb_str = sys.argv[2]
+measure_rgb_str_list = measure_rgb_str.split(' ')
+measure_rgb = list(map(float, measure_rgb_str_list))
 
 # 最適化対象のBSDFを定義（Principled BRDF）
 bsdf = mi.load_dict({
@@ -164,20 +170,20 @@ def material_preview(opt_bsdf, scene_params):
         elif 'specular' in key:
             scene_params["bsdf-matpreview.specular"] = opt_bsdf[key]
         elif 'base_color' in key:
-            scene_params["bsdf-matpreview.base_color.value"] = [0.2788942634768104, 0.022173884793387385, 0.001821161901293025]
+            scene_params["bsdf-matpreview.base_color.value"] = measure_rgb
         #else:
             #mtParams["bsdf-matpreview." + key] = opt_bsdf[key]
         
     scene_params.update()
     material_image = mi.render(scene,scene_params,spp = 516)
-    print(scene_params)
+    #print(scene_params)
     mi.util.convert_to_bitmap(material_image)
     mi.util.write_bitmap("Fitting_Results_another/" + file_name + ".png", material_image)
     
     # matplotlibの設定と画像表示
-    plt.axis("off")  # 軸を非表示
-    plt.imshow(material_image ** (1.0 / 2.2))  # 画像を表示（sRGBトーンマッピングを近似）
-    plt.show()  # 画像を表示
+    #plt.axis("off")  # 軸を非表示
+    #plt.imshow(material_image ** (1.0 / 2.2))  # 画像を表示（sRGBトーンマッピングを近似）
+    #plt.show()  # 画像を表示
 
 def optimize(targetBRDF, measures, scene_params, steps, keys, lr = 0.001):
     
