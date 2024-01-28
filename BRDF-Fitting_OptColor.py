@@ -164,7 +164,7 @@ def material_preview(opt_bsdf, scene_params):
         elif 'specular' in key:
             scene_params["bsdf-matpreview.specular"] = opt_bsdf[key]
         elif 'base_color' in key:
-            scene_params["bsdf-matpreview.base_color.value"] = [0.0, 0.02518685962736163, 0.4178850708481375]
+            scene_params["bsdf-matpreview.base_color.value"] = opt_bsdf[key]
         #else:
             #mtParams["bsdf-matpreview." + key] = opt_bsdf[key]
         
@@ -314,5 +314,5 @@ def optimize_bc(scene_params, steps, lr = 0.01):
     
     mi.util.write_bitmap("Fitting_Results_another/" + file_name + ".png", image_final)
     
-#optimize_bc(scene_params, 120)
+optimize_bc(scene_params, 70)
 
