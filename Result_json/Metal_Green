@@ -1,0 +1,13 @@
+{
+    "name": "Metal_Green",
+    "base_color.value": [
+        0.20181451737880707,
+        0.44836363196372986,
+        0.41627055406570435
+    ],
+    "metallic.value": 0.3647487163543701,
+    "roughness.value": 0.28654783964157104,
+    "specular": 0.3078845739364624,
+    "clearcoat.value": 0.30258169770240784,
+    "clearcoat_gloss.value": 0.30083373188972473
+}

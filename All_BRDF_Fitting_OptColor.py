@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import colour as colour
 from colour.models import RGB_COLOURSPACE_BT2020
 import sys
+import json
 
 #利用可能なバリアントを表示
 variants = mi.variants()
@@ -252,6 +253,21 @@ def optimize(targetBRDF, measures, scene_params, steps, keys, lr = 0.001):
         print()
         
     material_preview(params, scene_params)
+
+    #セーブするデータを登録
+    data_to_save = {'name': file_name}
+    for key in keys:
+        data_to_save[key] = params[key]
+        if type(data_to_save[key]) == mi.cuda_ad_rgb.Color3f:
+            data_to_save[key] = list(data_to_save[key])
+            for i in range(len(data_to_save[key])):
+                data_to_save[key][i] = float(data_to_save[key][i][0])
+        if type(data_to_save[key]) == mi.cuda_ad_rgb.Float:
+            data_to_save[key] = float(data_to_save[key][0])
+    
+    #jsonfileに書き込み
+    with open('Result_json/' + file_name, 'w') as json_file:
+        json.dump(data_to_save, json_file, indent=4)
     
     #b = []
     #for i in range(4):

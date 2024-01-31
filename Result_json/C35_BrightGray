@@ -1,0 +1,13 @@
+{
+    "name": "C35_BrightGray",
+    "base_color.value": [
+        0.30762147903442383,
+        0.322550505399704,
+        0.32439088821411133
+    ],
+    "metallic.value": 0.25804147124290466,
+    "roughness.value": 0.390720009803772,
+    "specular": 0.295520156621933,
+    "clearcoat.value": 0.2980072796344757,
+    "clearcoat_gloss.value": 0.29936954379081726
+}

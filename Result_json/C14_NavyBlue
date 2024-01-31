@@ -1,0 +1,13 @@
+{
+    "name": "C14_NavyBlue",
+    "base_color.value": [
+        0.15870139002799988,
+        0.16892066597938538,
+        0.17570757865905762
+    ],
+    "metallic.value": 0.2828606367111206,
+    "roughness.value": 0.35701218247413635,
+    "specular": 0.286641001701355,
+    "clearcoat.value": 0.2947920262813568,
+    "clearcoat_gloss.value": 0.2993178367614746
+}

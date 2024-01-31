@@ -1,0 +1,13 @@
+{
+    "name": "C15_DarkGreen",
+    "base_color.value": [
+        0.15686066448688507,
+        0.17618511617183685,
+        0.16744858026504517
+    ],
+    "metallic.value": 0.28347718715667725,
+    "roughness.value": 0.356283038854599,
+    "specular": 0.2868955433368683,
+    "clearcoat.value": 0.2948014736175537,
+    "clearcoat_gloss.value": 0.29932504892349243
+}

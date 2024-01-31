@@ -1,0 +1,13 @@
+{
+    "name": "Char_Pink",
+    "base_color.value": [
+        0.4025886356830597,
+        0.238416388630867,
+        0.2350282371044159
+    ],
+    "metallic.value": 0.2667699456214905,
+    "roughness.value": 0.39026379585266113,
+    "specular": 0.29488661885261536,
+    "clearcoat.value": 0.29744720458984375,
+    "clearcoat_gloss.value": 0.2992383539676666
+}

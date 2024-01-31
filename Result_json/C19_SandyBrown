@@ -1,0 +1,13 @@
+{
+    "name": "C19_SandyBrown",
+    "base_color.value": [
+        0.35765641927719116,
+        0.2715265452861786,
+        0.22116021811962128
+    ],
+    "metallic.value": 0.2605469226837158,
+    "roughness.value": 0.39537110924720764,
+    "specular": 0.29293182492256165,
+    "clearcoat.value": 0.29688993096351624,
+    "clearcoat_gloss.value": 0.2991422116756439
+}

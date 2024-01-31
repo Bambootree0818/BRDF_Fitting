@@ -1,0 +1,13 @@
+{
+    "name": "C12_OliveDrab",
+    "base_color.value": [
+        0.1897183507680893,
+        0.18852640688419342,
+        0.1725262552499771
+    ],
+    "metallic.value": 0.27802395820617676,
+    "roughness.value": 0.36523300409317017,
+    "specular": 0.2866041362285614,
+    "clearcoat.value": 0.29493799805641174,
+    "clearcoat_gloss.value": 0.29927003383636475
+}

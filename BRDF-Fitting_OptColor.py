@@ -6,6 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import colour as colour
 from colour.models import RGB_COLOURSPACE_BT2020
+import json
 
 #利用可能なバリアントを表示
 variants = mi.variants()
@@ -164,13 +165,13 @@ def material_preview(opt_bsdf, scene_params):
         elif 'specular' in key:
             scene_params["bsdf-matpreview.specular"] = opt_bsdf[key]
         elif 'base_color' in key:
-            scene_params["bsdf-matpreview.base_color.value"] = [0.2788942634768104, 0.022173884793387385, 0.001821161901293025]
+            scene_params["bsdf-matpreview.base_color.value"] = [0.4793201831008268, 0.000607053967097675, 0.004024717018496307]
         #else:
             #mtParams["bsdf-matpreview." + key] = opt_bsdf[key]
         
     scene_params.update()
     material_image = mi.render(scene,scene_params,spp = 516)
-    print(scene_params)
+    #print(scene_params)
     mi.util.convert_to_bitmap(material_image)
     mi.util.write_bitmap("Fitting_Results_another/" + file_name + ".png", material_image)
     
@@ -246,6 +247,22 @@ def optimize(targetBRDF, measures, scene_params, steps, keys, lr = 0.001):
         print()
         
     material_preview(params, scene_params)
+
+    
+    #セーブするデータを登録
+    data_to_save = {'name': file_name}
+    for key in keys:
+        data_to_save[key] = params[key]
+        if type(data_to_save[key]) == mi.cuda_ad_rgb.Color3f:
+            data_to_save[key] = list(data_to_save[key])
+            for i in range(len(data_to_save[key])):
+                data_to_save[key][i] = float(data_to_save[key][i][0])
+        if type(data_to_save[key]) == mi.cuda_ad_rgb.Float:
+            data_to_save[key] = float(data_to_save[key][0])
+    
+    #jsonfileに書き込み
+    with open('Result_json/' + file_name, 'w') as json_file:
+        json.dump(data_to_save, json_file, indent=4)
     
     #b = []
     #for i in range(4):
@@ -265,6 +282,8 @@ s = Samples(sample_data)
 
 base_color_flag = True
 optimize(bsdf, s, scene_params,3000,keys)
+
+'''
 
 #画像と参照画像との間の平均二乗誤差を計算する関数
 def mse_image(image, image_ref):
@@ -317,3 +336,4 @@ def optimize_bc(scene_params, steps, lr = 0.01):
     
 #optimize_bc(scene_params, 120)
 
+'''
