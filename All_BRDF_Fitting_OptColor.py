@@ -259,9 +259,7 @@ def optimize(targetBRDF, measures, scene_params, steps, keys, lr = 0.001):
     for key in keys:
         data_to_save[key] = params[key]
         if type(data_to_save[key]) == mi.cuda_ad_rgb.Color3f:
-            data_to_save[key] = list(data_to_save[key])
-            for i in range(len(data_to_save[key])):
-                data_to_save[key][i] = float(data_to_save[key][i][0])
+            data_to_save[key] = measure_rgb
         if type(data_to_save[key]) == mi.cuda_ad_rgb.Float:
             data_to_save[key] = float(data_to_save[key][0])
     
