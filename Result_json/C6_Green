@@ -1,8 +1,13 @@
 {
     "name": "C6_Green",
-    "metallic.value": 0.28566914796829224,
-    "roughness.value": 0.3116355538368225,
-    "specular": 0.32746225595474243,
-    "clearcoat.value": 0.3278408944606781,
-    "clearcoat_gloss.value": 0.3297463655471802
+    "base_color.value": [
+        0.03954623527673284,
+        0.1559264637078274,
+        0.0595112381629812
+    ],
+    "metallic.value": 0.36382627487182617,
+    "roughness.value": 0.2233494520187378,
+    "specular": 0.37417253851890564,
+    "clearcoat.value": 0.37797078490257263,
+    "clearcoat_gloss.value": 0.38193631172180176
 }

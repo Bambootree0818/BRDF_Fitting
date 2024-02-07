@@ -48,7 +48,7 @@ bsdf = mi.load_dict({
 })
 
 keys = [
-    #'base_color.value',
+    'base_color.value',
     'metallic.value',
     'roughness.value',
     'specular',
@@ -209,7 +209,7 @@ def optimize(targetBRDF, measures, scene_params, steps, keys, lr = 0.001):
         
         penalty = 0
         for key in keys:
-            penalty += dr.sqr(opt[key] - 0.33)
+            penalty += dr.sqr(opt[key] - 0.3824)
         loss = loss + penalty
         #print(loss)
         #lossf = dr.sum(loss)[0] / len(loss)

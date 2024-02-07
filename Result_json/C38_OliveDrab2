@@ -1,8 +1,13 @@
 {
     "name": "C38_OliveDrab2",
-    "metallic.value": 0.28555917739868164,
-    "roughness.value": 0.41323113441467285,
-    "specular": 0.32405969500541687,
-    "clearcoat.value": 0.32646867632865906,
-    "clearcoat_gloss.value": 0.32863879203796387
+    "base_color.value": [
+        0.08437621154414882,
+        0.07618538148130785,
+        0.04970656598412723
+    ],
+    "metallic.value": 0.36815759539604187,
+    "roughness.value": 0.43966466188430786,
+    "specular": 0.37313270568847656,
+    "clearcoat.value": 0.37675583362579346,
+    "clearcoat_gloss.value": 0.38095661997795105
 }

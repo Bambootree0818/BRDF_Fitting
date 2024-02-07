@@ -1,8 +1,13 @@
 {
     "name": "C36_RLM74",
-    "metallic.value": 0.286125510931015,
-    "roughness.value": 0.40499716997146606,
-    "specular": 0.32512134313583374,
-    "clearcoat.value": 0.3269888758659363,
-    "clearcoat_gloss.value": 0.3289039731025696
+    "base_color.value": [
+        0.08650046203654976,
+        0.10224173308810132,
+        0.10461648409110419
+    ],
+    "metallic.value": 0.3686768114566803,
+    "roughness.value": 0.43280765414237976,
+    "specular": 0.37329766154289246,
+    "clearcoat.value": 0.37692946195602417,
+    "clearcoat_gloss.value": 0.38111412525177
 }

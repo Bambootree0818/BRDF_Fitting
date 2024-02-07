@@ -1,8 +1,13 @@
 {
     "name": "Metal_Purpule",
-    "metallic.value": 0.36395391821861267,
-    "roughness.value": 0.2813052535057068,
-    "specular": 0.34496986865997314,
-    "clearcoat.value": 0.3336006999015808,
-    "clearcoat_gloss.value": 0.3306170105934143
+    "base_color.value": [
+        0.83879901174074,
+        0.3005437944157765,
+        0.5906188409193369
+    ],
+    "metallic.value": 0.4829854965209961,
+    "roughness.value": 0.2741631865501404,
+    "specular": 0.3914390206336975,
+    "clearcoat.value": 0.38546353578567505,
+    "clearcoat_gloss.value": 0.3834679126739502
 }

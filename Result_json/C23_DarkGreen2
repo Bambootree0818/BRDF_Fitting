@@ -1,8 +1,13 @@
 {
     "name": "C23_DarkGreen2",
-    "metallic.value": 0.284945011138916,
-    "roughness.value": 0.4049210846424103,
-    "specular": 0.3258560597896576,
-    "clearcoat.value": 0.3273278474807739,
-    "clearcoat_gloss.value": 0.3289574086666107
+    "base_color.value": [
+        0.14126329114027164,
+        0.13286832155381798,
+        0.06301001765316767
+    ],
+    "metallic.value": 0.36638811230659485,
+    "roughness.value": 0.4353373646736145,
+    "specular": 0.37366342544555664,
+    "clearcoat.value": 0.3770403563976288,
+    "clearcoat_gloss.value": 0.3810887634754181
 }

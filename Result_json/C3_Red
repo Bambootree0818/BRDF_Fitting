@@ -1,8 +1,13 @@
 {
     "name": "C3_Red",
-    "metallic.value": 0.2650761008262634,
-    "roughness.value": 0.3691195845603943,
-    "specular": 0.32985344529151917,
-    "clearcoat.value": 0.329661101102829,
-    "clearcoat_gloss.value": 0.3300155699253082
+    "base_color.value": [
+        0.4793201831008268,
+        0.000607053967097675,
+        0.004024717018496307
+    ],
+    "metallic.value": 0.3607064187526703,
+    "roughness.value": 0.3694905936717987,
+    "specular": 0.3780148923397064,
+    "clearcoat.value": 0.3808823525905609,
+    "clearcoat_gloss.value": 0.3833200931549072
 }

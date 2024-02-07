@@ -1,8 +1,13 @@
 {
     "name": "C1_White",
-    "metallic.value": 0.28827154636383057,
-    "roughness.value": 0.37247368693351746,
-    "specular": 0.3356797993183136,
-    "clearcoat.value": 0.3318541944026947,
-    "clearcoat_gloss.value": 0.32995039224624634
+    "base_color.value": [
+        0.9646862478944651,
+        0.9646862478944651,
+        0.9822505503331171
+    ],
+    "metallic.value": 0.36415231227874756,
+    "roughness.value": 0.44228506088256836,
+    "specular": 0.38469886779785156,
+    "clearcoat.value": 0.3835761547088623,
+    "clearcoat_gloss.value": 0.3830096125602722
 }

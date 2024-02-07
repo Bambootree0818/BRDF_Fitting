@@ -1,8 +1,13 @@
 {
     "name": "C21_MiddleStone",
-    "metallic.value": 0.28166407346725464,
-    "roughness.value": 0.42064687609672546,
-    "specular": 0.32671815156936646,
-    "clearcoat.value": 0.32749173045158386,
-    "clearcoat_gloss.value": 0.32858651876449585
+    "base_color.value": [
+        0.3419144249086609,
+        0.2704977910130658,
+        0.07227185068231748
+    ],
+    "metallic.value": 0.3557768166065216,
+    "roughness.value": 0.4654654562473297,
+    "specular": 0.3757615089416504,
+    "clearcoat.value": 0.3775765001773834,
+    "clearcoat_gloss.value": 0.3808075189590454
 }

@@ -1,8 +1,13 @@
 {
     "name": "C7_Brown",
-    "metallic.value": 0.2827800512313843,
-    "roughness.value": 0.30648475885391235,
-    "specular": 0.32692089676856995,
-    "clearcoat.value": 0.32767030596733093,
-    "clearcoat_gloss.value": 0.32970839738845825
+    "base_color.value": [
+        0.35153259950043936,
+        0.08021982031446832,
+        0.05126945837404324
+    ],
+    "metallic.value": 0.34720364212989807,
+    "roughness.value": 0.21450047194957733,
+    "specular": 0.37369081377983093,
+    "clearcoat.value": 0.37867292761802673,
+    "clearcoat_gloss.value": 0.3818036615848541
 }
