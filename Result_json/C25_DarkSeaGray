@@ -1,13 +1,8 @@
 {
     "name": "C25_DarkSeaGray",
-    "base_color.value": [
-        0.21586050011389926,
-        0.238397573812271,
-        0.184474994500441
-    ],
-    "metallic.value": 0.26152536273002625,
-    "roughness.value": 0.38913026452064514,
-    "specular": 0.29020553827285767,
-    "clearcoat.value": 0.29614338278770447,
-    "clearcoat_gloss.value": 0.29914113879203796
+    "metallic.value": 0.28363192081451416,
+    "roughness.value": 0.4205198287963867,
+    "specular": 0.3261431157588959,
+    "clearcoat.value": 0.32729923725128174,
+    "clearcoat_gloss.value": 0.3285928964614868
 }

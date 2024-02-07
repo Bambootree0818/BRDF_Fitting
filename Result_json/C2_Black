@@ -1,13 +1,8 @@
 {
     "name": "C2_Black",
-    "base_color.value": [
-        0.043735029256973465,
-        0.03688945040110004,
-        0.046665086336880095
-    ],
-    "metallic.value": 0.2942403256893158,
-    "roughness.value": 0.15102122724056244,
-    "specular": 0.2897892892360687,
-    "clearcoat.value": 0.29526451230049133,
-    "clearcoat_gloss.value": 0.29976949095726013
+    "metallic.value": 0.2879752516746521,
+    "roughness.value": 0.3171176314353943,
+    "specular": 0.3253572881221771,
+    "clearcoat.value": 0.3271651864051819,
+    "clearcoat_gloss.value": 0.3295903205871582
 }

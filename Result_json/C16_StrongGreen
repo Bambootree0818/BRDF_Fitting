@@ -1,13 +1,8 @@
 {
     "name": "C16_StrongGreen",
-    "base_color.value": [
-        0.05780543019106723,
-        0.07227185068231748,
-        0.05448027644244237
-    ],
-    "metallic.value": 0.2815154790878296,
-    "roughness.value": 0.3616948425769806,
-    "specular": 0.2867579460144043,
-    "clearcoat.value": 0.29485008120536804,
-    "clearcoat_gloss.value": 0.29929205775260925
+    "metallic.value": 0.2857081890106201,
+    "roughness.value": 0.4159945845603943,
+    "specular": 0.32348188757896423,
+    "clearcoat.value": 0.32622793316841125,
+    "clearcoat_gloss.value": 0.32853153347969055
 }

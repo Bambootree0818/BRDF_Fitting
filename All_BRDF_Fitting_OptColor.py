@@ -54,7 +54,7 @@ bsdf = mi.load_dict({
 })
 
 keys = [
-    'base_color.value',
+    #'base_color.value',
     'metallic.value',
     'roughness.value',
     'specular',
@@ -188,6 +188,9 @@ def material_preview(opt_bsdf, scene_params):
 
 def optimize(targetBRDF, measures, scene_params, steps, keys, lr = 0.001):
     
+    scene_params["bsdf-matpreview.base_color.value"] = measure_rgb
+    scene_params.update()
+    
     #オプティマイザーを定義
     opt = mi.ad.Adam(lr = lr)
     #errf_prev = 0.
@@ -215,7 +218,7 @@ def optimize(targetBRDF, measures, scene_params, steps, keys, lr = 0.001):
         
         penalty = 0
         for key in keys:
-            penalty += dr.sqr(opt[key] - 0.3)
+            penalty += dr.sqr(opt[key] - 0.329)
         loss = loss + penalty
         #print(loss)
         #lossf = dr.sum(loss)[0] / len(loss)

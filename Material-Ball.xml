@@ -37,9 +37,9 @@
 
 	<bsdf type="principled" id="bsdf-matpreview">
 		<rgb name="base_color" value="1.0,1.0,1.0"/>
-		<float name="metallic" value="0.7" />
-		<float name="specular" value="0.6" />
-		<float name="roughness" value="0.2" />
+		<float name="metallic" value="0.5" />
+		<float name="specular" value="0.5" />
+		<float name="roughness" value="0.5" />
 		<float name="spec_tint" value="0.0" />
 		<float name="anisotropic" value="0.0" />
 		<float name="sheen" value="0.0" />

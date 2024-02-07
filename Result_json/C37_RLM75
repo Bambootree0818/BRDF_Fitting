@@ -1,13 +1,8 @@
 {
     "name": "C37_RLM75",
-    "base_color.value": [
-        0.13286832155381798,
-        0.13286832155381798,
-        0.14412847085805777
-    ],
-    "metallic.value": 0.2702958285808563,
-    "roughness.value": 0.3639591336250305,
-    "specular": 0.28869298100471497,
-    "clearcoat.value": 0.29555341601371765,
-    "clearcoat_gloss.value": 0.2992931008338928
+    "metallic.value": 0.2840457856655121,
+    "roughness.value": 0.4090304374694824,
+    "specular": 0.3258591294288635,
+    "clearcoat.value": 0.32733675837516785,
+    "clearcoat_gloss.value": 0.32888686656951904
 }

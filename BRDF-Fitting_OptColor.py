@@ -48,7 +48,7 @@ bsdf = mi.load_dict({
 })
 
 keys = [
-    'base_color.value',
+    #'base_color.value',
     'metallic.value',
     'roughness.value',
     'specular',
@@ -59,7 +59,6 @@ keys = [
     'clearcoat_gloss.value',  
     #'spec_trans.value'  
 ]
-base_color_flag = False
     
 class Samples:
 
@@ -181,6 +180,7 @@ def material_preview(opt_bsdf, scene_params):
     plt.show()  # 画像を表示
 
 def optimize(targetBRDF, measures, scene_params, steps, keys, lr = 0.001):
+    base_color_flag = True
     
     #オプティマイザーを定義
     opt = mi.ad.Adam(lr = lr)
@@ -209,7 +209,7 @@ def optimize(targetBRDF, measures, scene_params, steps, keys, lr = 0.001):
         
         penalty = 0
         for key in keys:
-            penalty += dr.sqr(opt[key] - 0.3)
+            penalty += dr.sqr(opt[key] - 0.33)
         loss = loss + penalty
         #print(loss)
         #lossf = dr.sum(loss)[0] / len(loss)
@@ -246,6 +246,8 @@ def optimize(targetBRDF, measures, scene_params, steps, keys, lr = 0.001):
         print("loss:", loss)
         print()
         
+    
+        
     material_preview(params, scene_params)
 
     
@@ -280,7 +282,7 @@ scene_params = mi.traverse(scene)
 #測定データクラスのインスタンスを作成
 s = Samples(sample_data)
 
-base_color_flag = True
+
 optimize(bsdf, s, scene_params,3000,keys)
 
 '''

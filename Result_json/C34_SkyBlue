@@ -1,13 +1,8 @@
 {
     "name": "C34_SkyBlue",
-    "base_color.value": [
-        0.0,
-        0.2788942634768104,
-        0.7011018919329731
-    ],
-    "metallic.value": 0.25355064868927,
-    "roughness.value": 0.23741456866264343,
-    "specular": 0.29490941762924194,
-    "clearcoat.value": 0.29915034770965576,
-    "clearcoat_gloss.value": 0.2998637557029724
+    "metallic.value": 0.2838391661643982,
+    "roughness.value": 0.33165696263313293,
+    "specular": 0.3314407765865326,
+    "clearcoat.value": 0.329833984375,
+    "clearcoat_gloss.value": 0.32988470792770386
 }

@@ -1,13 +1,8 @@
 {
     "name": "C22_DarkEarth",
-    "base_color.value": [
-        0.17788841598362912,
-        0.11697066775851084,
-        0.08437621154414882
-    ],
-    "metallic.value": 0.27408498525619507,
-    "roughness.value": 0.368502140045166,
-    "specular": 0.2886688709259033,
-    "clearcoat.value": 0.29540643095970154,
-    "clearcoat_gloss.value": 0.29926663637161255
+    "metallic.value": 0.28535252809524536,
+    "roughness.value": 0.41324281692504883,
+    "specular": 0.32523319125175476,
+    "clearcoat.value": 0.3269180357456207,
+    "clearcoat_gloss.value": 0.328701376914978
 }

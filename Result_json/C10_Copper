@@ -1,13 +1,8 @@
 {
     "name": "C10_Copper",
-    "base_color.value": [
-        0.9046611743911496,
-        0.5457244613701866,
-        0.467783796112159
-    ],
-    "metallic.value": 0.3622947931289673,
-    "roughness.value": 0.2828063368797302,
-    "specular": 0.31177520751953125,
-    "clearcoat.value": 0.30394014716148376,
-    "clearcoat_gloss.value": 0.3009812533855438
+    "metallic.value": 0.344594806432724,
+    "roughness.value": 0.32010912895202637,
+    "specular": 0.34292981028556824,
+    "clearcoat.value": 0.33386147022247314,
+    "clearcoat_gloss.value": 0.33051934838294983
 }

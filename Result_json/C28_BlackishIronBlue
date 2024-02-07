@@ -1,13 +1,8 @@
 {
     "name": "C28_BlackishIronBlue",
-    "base_color.value": [
-        0.10224173308810132,
-        0.0822827071298148,
-        0.09084171118340768
-    ],
-    "metallic.value": 0.290031373500824,
-    "roughness.value": 0.1814277023077011,
-    "specular": 0.29103121161460876,
-    "clearcoat.value": 0.295975923538208,
-    "clearcoat_gloss.value": 0.2998676598072052
+    "metallic.value": 0.2852236330509186,
+    "roughness.value": 0.2871935963630676,
+    "specular": 0.32898780703544617,
+    "clearcoat.value": 0.3278617560863495,
+    "clearcoat_gloss.value": 0.32974374294281006
 }

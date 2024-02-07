@@ -1,13 +1,8 @@
 {
     "name": "C18_rlm70_1",
-    "base_color.value": [
-        0.0595112381629812,
-        0.06480326669290577,
-        0.06662593864377289
-    ],
-    "metallic.value": 0.2835046947002411,
-    "roughness.value": 0.34411904215812683,
-    "specular": 0.2873877286911011,
-    "clearcoat.value": 0.2949432134628296,
-    "clearcoat_gloss.value": 0.29943588376045227
+    "metallic.value": 0.2859188914299011,
+    "roughness.value": 0.40065863728523254,
+    "specular": 0.3248288631439209,
+    "clearcoat.value": 0.32702311873435974,
+    "clearcoat_gloss.value": 0.3290787637233734
 }

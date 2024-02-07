@@ -1,13 +1,8 @@
 {
     "name": "Metal_Blue",
-    "base_color.value": [
-        0.0,
-        0.3005437944157765,
-        0.8796223968878317
-    ],
-    "metallic.value": 0.3609812557697296,
-    "roughness.value": 0.29253751039505005,
-    "specular": 0.3069700300693512,
-    "clearcoat.value": 0.3022214472293854,
-    "clearcoat_gloss.value": 0.3007223606109619
+    "metallic.value": 0.31404533982276917,
+    "roughness.value": 0.3454475998878479,
+    "specular": 0.3369515538215637,
+    "clearcoat.value": 0.3315562605857849,
+    "clearcoat_gloss.value": 0.3301604390144348
 }

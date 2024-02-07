@@ -1,13 +1,8 @@
 {
     "name": "C20_LightBlue",
-    "base_color.value": [
-        0.3564001441459435,
-        0.5840784178911641,
-        0.4969329950608704
-    ],
-    "metallic.value": 0.2699732780456543,
-    "roughness.value": 0.4059526324272156,
-    "specular": 0.2999108135700226,
-    "clearcoat.value": 0.2990530729293823,
-    "clearcoat_gloss.value": 0.29910242557525635
+    "metallic.value": 0.2840268909931183,
+    "roughness.value": 0.4119850695133209,
+    "specular": 0.3322756886482239,
+    "clearcoat.value": 0.3300410807132721,
+    "clearcoat_gloss.value": 0.32914310693740845
 }
