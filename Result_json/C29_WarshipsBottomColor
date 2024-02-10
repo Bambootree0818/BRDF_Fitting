@@ -1,13 +1,14 @@
 {
     "name": "C29_WarshipsBottomColor",
     "base_color.value": [
-        0.09989872824711389,
-        0.043735029256973465,
-        0.043735029256973465
+        0.09139258400669152,
+        0.03751738429729302,
+        0.03660861129059997
     ],
     "metallic.value": 0.3680746257305145,
     "roughness.value": 0.4425228238105774,
     "specular": 0.3730631470680237,
     "clearcoat.value": 0.37670180201530457,
-    "clearcoat_gloss.value": 0.3809039890766144
+    "clearcoat_gloss.value": 0.3809039890766144,
+    "matallic_type": 0
 }

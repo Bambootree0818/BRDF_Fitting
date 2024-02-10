@@ -1,13 +1,14 @@
 {
     "name": "C31_WarshipColor1",
     "base_color.value": [
-        0.184474994500441,
-        0.21223075741405523,
-        0.184474994500441
+        0.18763627805140237,
+        0.207697393532951,
+        0.18889234272250108
     ],
     "metallic.value": 0.3581462800502777,
     "roughness.value": 0.45640483498573303,
     "specular": 0.3751107156276703,
     "clearcoat.value": 0.3773823380470276,
-    "clearcoat_gloss.value": 0.38089147210121155
+    "clearcoat_gloss.value": 0.38089147210121155,
+    "matallic_type": 0
 }

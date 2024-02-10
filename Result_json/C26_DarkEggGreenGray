@@ -1,13 +1,14 @@
 {
     "name": "C26_DarkEggGreenGray",
     "base_color.value": [
-        0.5394794890121072,
-        0.5775804404296506,
-        0.32314320911295075
+        0.6103840720991249,
+        0.5881852794189988,
+        0.33807580042301577
     ],
     "metallic.value": 0.35481128096580505,
     "roughness.value": 0.4442248046398163,
     "specular": 0.38176217675209045,
     "clearcoat.value": 0.3820861279964447,
-    "clearcoat_gloss.value": 0.38291603326797485
+    "clearcoat_gloss.value": 0.38291603326797485,
+    "matallic_type": 0
 }

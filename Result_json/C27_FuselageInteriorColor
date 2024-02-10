@@ -1,13 +1,14 @@
 {
     "name": "C27_FuselageInteriorColor",
     "base_color.value": [
-        0.4019777798321958,
-        0.33716361504833037,
-        0.019382360956935723
+        0.41002786096507976,
+        0.28161942081157926,
+        0.006979647752743658
     ],
     "metallic.value": 0.3570598363876343,
     "roughness.value": 0.4627992510795593,
     "specular": 0.3761245608329773,
     "clearcoat.value": 0.3776986300945282,
-    "clearcoat_gloss.value": 0.3808392584323883
+    "clearcoat_gloss.value": 0.3808392584323883,
+    "matallic_type": 0
 }

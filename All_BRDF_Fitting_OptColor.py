@@ -153,8 +153,8 @@ class Samples:
 #BRDFのサンプルを作成
 def createBRDFSample(brdf,wi,wo):
     si = mi.SurfaceInteraction3f()
-    si.wi = wi
-    values = brdf.eval(mi.BSDFContext(),si,wo)
+    si.wi = wi #入射方向を設定
+    values = brdf.eval(mi.BSDFContext(),si,wo) #入射方向と出射方向からその反射率を求める
     return values
 
 #マテリアルプレビュー
@@ -265,6 +265,9 @@ def optimize(targetBRDF, measures, scene_params, steps, keys, lr = 0.001):
             data_to_save[key] = measure_rgb
         if type(data_to_save[key]) == mi.cuda_ad_rgb.Float:
             data_to_save[key] = float(data_to_save[key][0])
+    
+    #メタリック塗料フラグ
+    data_to_save["matallic_type"] = 0
     
     #jsonfileに書き込み
     with open('Result_json/' + file_name, 'w') as json_file:

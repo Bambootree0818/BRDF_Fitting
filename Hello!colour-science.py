@@ -38,7 +38,7 @@ Z = 10 * sum(reflectance[λ] * D65_spectrum[λ] * color_matching_functions[λ][2
 #print(Y)
 #print(X,Y,Z)
 
-value = np.array([X, Y, Z])
+value = np.array([18.99/100,9.54/100,0.9/100])
 
 illuminant_RGB = np.array([0.31270, 0.32900])
 illuminant_XYZ = np.array([0.31270, 0.32900])
