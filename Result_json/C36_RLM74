@@ -5,10 +5,10 @@
         0.06218578579165436,
         0.06202791506389219
     ],
-    "metallic.value": 0.3686768114566803,
-    "roughness.value": 0.43280765414237976,
+    "metallic.value": 0.36867672204971313,
+    "roughness.value": 0.43280789256095886,
     "specular": 0.37329766154289246,
-    "clearcoat.value": 0.37692946195602417,
-    "clearcoat_gloss.value": 0.38111412525177,
+    "clearcoat.value": 0.37692952156066895,
+    "clearcoat_gloss.value": 0.38110724091529846,
     "matallic_type": 0
 }

@@ -39,7 +39,7 @@ bsdf = mi.load_dict({
     'type': 'principled',
     'base_color': {
             'type': 'rgb',
-            'value': [0.8,0.0,0.0]
+            'value': [1.0,1.0,1.0]
     },
     'metallic': 0.5,
     'specular': 0.5,
@@ -158,28 +158,28 @@ def createBRDFSample(brdf,wi,wo):
     return values
 
 #マテリアルプレビュー
-def material_preview(opt_bsdf, scene_params):
-    for key in keys:
-        if 'metallic' in key:
-            scene_params["bsdf-matpreview.metallic.value"] = opt_bsdf[key]
-        elif 'roughness' in key:
-            scene_params["bsdf-matpreview.roughness.value"] = opt_bsdf[key]
-        elif 'clearcoat.value' in key:
-            scene_params["bsdf-matpreview.clearcoat.value"] = opt_bsdf[key]
-        elif 'clearcoat_gloss.value' in key:
-            scene_params["bsdf-matpreview.clearcoat_gloss.value"] = opt_bsdf[key]
-        elif 'specular' in key:
-            scene_params["bsdf-matpreview.specular"] = opt_bsdf[key]
-        elif 'base_color' in key:
-            scene_params["bsdf-matpreview.base_color.value"] = measure_rgb
-        #else:
+def material_preview(opt_bsdf, scene_params,step):
+    if step % 30 == 0 and file_name == "C3_Red":
+        for key in keys:
+            if 'metallic' in key:
+                scene_params["bsdf-matpreview.metallic.value"] = opt_bsdf[key]
+            elif 'roughness' in key:
+                scene_params["bsdf-matpreview.roughness.value"] = opt_bsdf[key]
+            elif 'clearcoat.value' in key:
+                scene_params["bsdf-matpreview.clearcoat.value"] = opt_bsdf[key]
+            elif 'clearcoat_gloss.value' in key:
+                scene_params["bsdf-matpreview.clearcoat_gloss.value"] = opt_bsdf[key]
+            elif 'specular' in key:
+                scene_params["bsdf-matpreview.specular"] = opt_bsdf[key]
+            elif 'base_color' in key:
+                scene_params["bsdf-matpreview.base_color.value"] = opt_bsdf[key]
             #mtParams["bsdf-matpreview." + key] = opt_bsdf[key]
         
-    scene_params.update()
-    material_image = mi.render(scene,scene_params,spp = 516)
-    #print(scene_params)
-    mi.util.convert_to_bitmap(material_image)
-    mi.util.write_bitmap("Fitting_Results_another/" + file_name + ".png", material_image)
+        scene_params.update()
+        material_image = mi.render(scene,scene_params,spp = 516)
+        #print(scene_params)
+        mi.util.convert_to_bitmap(material_image)
+        mi.util.write_bitmap("gifs/" + file_name + str(step) + ".png", material_image)
     
     # matplotlibの設定と画像表示
     #plt.axis("off")  # 軸を非表示
@@ -254,8 +254,10 @@ def optimize(targetBRDF, measures, scene_params, steps, keys, lr = 0.001):
             print(key,  opt[key])
         print("loss:", loss)
         print()
+
+        material_preview(params, scene_params, step)
         
-    material_preview(params, scene_params)
+    
 
     #セーブするデータを登録
     data_to_save = {'name': file_name}
