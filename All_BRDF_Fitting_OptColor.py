@@ -39,7 +39,7 @@ bsdf = mi.load_dict({
     'type': 'principled',
     'base_color': {
             'type': 'rgb',
-            'value': [0.8,0.0,0.0]
+            'value': [1.0,1.0,1.0]
     },
     'metallic': 0.5,
     'specular': 0.5,
@@ -158,7 +158,7 @@ def createBRDFSample(brdf,wi,wo):
     return values
 
 #マテリアルプレビュー
-def material_preview(opt_bsdf, scene_params):
+def material_preview(opt_bsdf, scene_params,step):
     for key in keys:
         if 'metallic' in key:
             scene_params["bsdf-matpreview.metallic.value"] = opt_bsdf[key]
@@ -172,8 +172,7 @@ def material_preview(opt_bsdf, scene_params):
             scene_params["bsdf-matpreview.specular"] = opt_bsdf[key]
         elif 'base_color' in key:
             scene_params["bsdf-matpreview.base_color.value"] = measure_rgb
-        #else:
-            #mtParams["bsdf-matpreview." + key] = opt_bsdf[key]
+        #mtParams["bsdf-matpreview." + key] = opt_bsdf[key]
         
     scene_params.update()
     material_image = mi.render(scene,scene_params,spp = 516)
@@ -252,10 +251,12 @@ def optimize(targetBRDF, measures, scene_params, steps, keys, lr = 0.001):
         print('Iteration:', step)
         for key in keys:
             print(key,  opt[key])
-        print("loss:", loss)
+        #print("loss:", loss)
         print()
+
+    material_preview(params, scene_params, step)
         
-    material_preview(params, scene_params)
+    
 
     #セーブするデータを登録
     data_to_save = {'name': file_name}
