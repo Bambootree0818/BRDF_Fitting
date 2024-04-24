@@ -26,7 +26,7 @@
 
 以下のgifは赤色の塗料の計測データ使用してループを回している様子です。だんだんと色と質感が変化するのが分かるかと思います。
 
-（gifのため画質が良くないですが実際はもっと高解像度です）
+（gifのため画質が良くないですが実際はもっと階調が豊かです）
 
 ![animated_C3_Red_complete](https://github.com/Bambootree0818/BRDF_Fitting/assets/137160764/de6df7b4-674d-4a28-9dde-517025c6f3f2)
 
