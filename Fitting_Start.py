@@ -40,7 +40,7 @@ def get_rgb_value(xyz_value):
     return rgb_value_list
 
 # ファイルパスと名前を指定
-file_path = 'sample_Lab_data.txt'  # テキストファイルのパスを指定
+file_path = 'measures_Color/sample_Lab_data.txt'  # テキストファイルのパスを指定
 
 # データを読み込み、キーとRGB値のマッピングを取得
 keys, data = load_data(file_path)

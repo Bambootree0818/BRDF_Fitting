@@ -24,7 +24,7 @@ def read_sample(file_path):
     return data_list
 
 file_name = input('file name : ')
-file_path = 'measures/' + file_name + '.astm'  #データパスの指定
+file_path = 'measures_BRDF/' + file_name + '.astm'  #データパスの指定
 sample_data = read_sample(file_path)
 #print(data[0][4])
 
@@ -164,7 +164,7 @@ def material_preview(opt_bsdf, scene_params):
         elif 'specular' in key:
             scene_params["bsdf-matpreview.specular"] = opt_bsdf[key]
         elif 'base_color' in key:
-            scene_params["bsdf-matpreview.base_color.value"] = [0.4793201831008268, 0.000607053967097675, 0.004024717018496307]
+            scene_params["bsdf-matpreview.base_color.value"] = opt_bsdf[key]
         #else:
             #mtParams["bsdf-matpreview." + key] = opt_bsdf[key]
         
@@ -275,7 +275,7 @@ def optimize(targetBRDF, measures, scene_params, steps, keys, lr = 0.001):
     #print(b)
     
 
-scene = mi.load_file("Material-Ball.xml")
+scene = mi.load_file("Scene/Material-Ball.xml")
 #シーンをトラバースし、最適化パラメータをリストアップ
 scene_params = mi.traverse(scene)
 
