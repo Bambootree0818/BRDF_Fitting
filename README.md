@@ -5,7 +5,8 @@
 
 このリポジトリには塗料の実サンプルの反射特性(BRDF)の計測データから、塗料をコンピュータ上で表現するためのマテリアル(Principled BRDF)を推定するソースコードをアップロードしています。
 
-# PythonバージョPython 3.9.1313
+# Pythonバージョン
+Python 3.9.13
 
 # 実行
 すべての計測データに対して推定を行う場合はFitting_Start.pyを実行してください。一つのデータのみの場合はBRDF-Fitting_OptColor.pyを実行し、measures_BRDFフォルダの任意のファイル名を入力してください。
