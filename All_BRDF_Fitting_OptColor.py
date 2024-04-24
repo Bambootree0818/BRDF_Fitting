@@ -6,6 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import colour as colour
 from colour.models import RGB_COLOURSPACE_BT2020
+import sys
 import json
 
 #利用可能なバリアントを表示
@@ -23,17 +24,20 @@ def read_sample(file_path):
     data_list = [line.strip().split(',') for line in data[14:] if line.strip()]
     return data_list
 
-file_name = input('file name : ')
+file_name = sys.argv[1]
 file_path = 'measures_BRDF/' + file_name + '.astm'  #データパスの指定
 sample_data = read_sample(file_path)
-#print(data[0][4])
+
+measure_rgb_str = sys.argv[2]
+measure_rgb_str_list = measure_rgb_str.split(' ')
+measure_rgb = list(map(float, measure_rgb_str_list))
 
 # 最適化対象のBSDFを定義（Principled BRDF）
 bsdf = mi.load_dict({
     'type': 'principled',
     'base_color': {
             'type': 'rgb',
-            'value': [0.8,0.0,0.0]
+            'value': [1.0,1.0,1.0]
     },
     'metallic': 0.5,
     'specular': 0.5,
@@ -59,6 +63,7 @@ keys = [
     'clearcoat_gloss.value',  
     #'spec_trans.value'  
 ]
+base_color_flag = False
     
 class Samples:
 
@@ -95,9 +100,6 @@ class Samples:
         p = dr.cuda.ad.Float(phi_list)
         st, ct = dr.sincos(t)
         sp, cp = dr.sincos(p)
-            #print(mi.Vector3f(cp * st, sp * st, ct))
-            #w.append(mi.Vector3f(cp * st, sp * st, ct))
-            #print(w[0][0])
         return mi.Vector3f(cp * st, sp * st, ct)
     
     #正反射のベクトルを計算
@@ -146,12 +148,12 @@ class Samples:
 #BRDFのサンプルを作成
 def createBRDFSample(brdf,wi,wo):
     si = mi.SurfaceInteraction3f()
-    si.wi = wi
-    values = brdf.eval(mi.BSDFContext(),si,wo)
+    si.wi = wi #入射方向を設定
+    values = brdf.eval(mi.BSDFContext(),si,wo) #入射方向と出射方向からその反射率を求める
     return values
 
 #マテリアルプレビュー
-def material_preview(opt_bsdf, scene_params):
+def material_preview(opt_bsdf, scene_params,step):
     for key in keys:
         if 'metallic' in key:
             scene_params["bsdf-matpreview.metallic.value"] = opt_bsdf[key]
@@ -164,33 +166,29 @@ def material_preview(opt_bsdf, scene_params):
         elif 'specular' in key:
             scene_params["bsdf-matpreview.specular"] = opt_bsdf[key]
         elif 'base_color' in key:
-            scene_params["bsdf-matpreview.base_color.value"] = opt_bsdf[key]
-        #else:
-            #mtParams["bsdf-matpreview." + key] = opt_bsdf[key]
+            scene_params["bsdf-matpreview.base_color.value"] = measure_rgb
+        #mtParams["bsdf-matpreview." + key] = opt_bsdf[key]
         
     scene_params.update()
     material_image = mi.render(scene,scene_params,spp = 516)
     #print(scene_params)
     mi.util.convert_to_bitmap(material_image)
-    mi.util.write_bitmap("Fitting_Results_another/" + file_name + ".png", material_image)
+    mi.util.write_bitmap("Fitting_Results/" + file_name + ".png", material_image)
     
     # matplotlibの設定と画像表示
-    plt.axis("off")  # 軸を非表示
-    plt.imshow(material_image ** (1.0 / 2.2))  # 画像を表示（sRGBトーンマッピングを近似）
-    plt.show()  # 画像を表示
+    #plt.axis("off")  # 軸を非表示
+    #plt.imshow(material_image ** (1.0 / 2.2))  # 画像を表示（sRGBトーンマッピングを近似）
+    #plt.show()  # 画像を表示
 
 def optimize(targetBRDF, measures, scene_params, steps, keys, lr = 0.001):
-    base_color_flag = True
     
     #オプティマイザーを定義
     opt = mi.ad.Adam(lr = lr)
-    #errf_prev = 0.
     
     param_clamp = True
     
     #シーンをトラバースし、最適化パラメータをリストアップ
     params = mi.traverse(targetBRDF)
-    #params_init = dict(params)
     print(params)
     for key in keys:
         opt[key] = params[key]
@@ -212,7 +210,6 @@ def optimize(targetBRDF, measures, scene_params, steps, keys, lr = 0.001):
             penalty += dr.sqr(opt[key] - 0.3824)
         loss = loss + penalty
         #print(loss)
-        #lossf = dr.sum(loss)[0] / len(loss)
         
         dr.backward(loss)
         
@@ -220,13 +217,13 @@ def optimize(targetBRDF, measures, scene_params, steps, keys, lr = 0.001):
         if param_clamp:
             for key in keys:
                 if 'metallic' in key:
-                    #opt[key] = dr.clamp(opt[key],0.0,1.0)
+                    opt[key] = dr.clamp(opt[key],0.0,1.0)
                     pass
                 elif 'roughness' in key:
-                    #opt[key] = dr.clamp(opt[key],0.0,1.0)
+                    opt[key] = dr.clamp(opt[key],0.0,1.0)
                     pass
                 elif 'clearcoat' in key:
-                    #opt[key] = dr.clamp(opt[key],0.0,1.0)
+                    opt[key] = dr.clamp(opt[key],0.0,1.0)
                     pass
                 elif 'specular' in key:
                     opt[key] = dr.clamp(opt[key],0.0,1.0)
@@ -237,7 +234,6 @@ def optimize(targetBRDF, measures, scene_params, steps, keys, lr = 0.001):
                 else:
                     opt[key] = dr.clamp(opt[key],0.0,1.0)
 
-        #errf_prev = lossf
         params.update(opt)
         
         print('Iteration:', step)
@@ -245,35 +241,24 @@ def optimize(targetBRDF, measures, scene_params, steps, keys, lr = 0.001):
             print(key,  opt[key])
         print("loss:", loss)
         print()
-        
-    
-        
-    material_preview(params, scene_params)
 
-    
+    material_preview(params, scene_params, step)
+        
     #セーブするデータを登録
     data_to_save = {'name': file_name}
     for key in keys:
         data_to_save[key] = params[key]
         if type(data_to_save[key]) == mi.cuda_ad_rgb.Color3f:
-            data_to_save[key] = list(data_to_save[key])
-            for i in range(len(data_to_save[key])):
-                data_to_save[key][i] = float(data_to_save[key][i][0])
+            data_to_save[key] = measure_rgb
         if type(data_to_save[key]) == mi.cuda_ad_rgb.Float:
             data_to_save[key] = float(data_to_save[key][0])
     
+    #メタリック塗料フラグ
+    data_to_save["matallic_type"] = 0
+    
     #jsonfileに書き込み
     with open('Result_json/' + file_name, 'w') as json_file:
-        json.dump(data_to_save, json_file, indent=4)
-    
-    #b = []
-    #for i in range(4):
-    #    b.append(params['base_color.value'][i]) 
-    #b= dr.unravel(mi.cuda_ad_spectral.Spectrum, dr.cuda.ad.Float(b))
-    #w = mi.cuda_ad_spectral.Spectrum(465.0, 525.0, 630.0, 700.0)
-    #srgb = mi.cuda_ad_spectral.spectrum_to_xyz(values=b,wavelengths=w)
-    #print(b)
-    
+        json.dump(data_to_save, json_file, indent=4) 
 
 scene = mi.load_file("Scene/Material-Ball.xml")
 #シーンをトラバースし、最適化パラメータをリストアップ
@@ -282,60 +267,5 @@ scene_params = mi.traverse(scene)
 #測定データクラスのインスタンスを作成
 s = Samples(sample_data)
 
-
+base_color_flag = True
 optimize(bsdf, s, scene_params,3000,keys)
-
-'''
-
-#画像と参照画像との間の平均二乗誤差を計算する関数
-def mse_image(image, image_ref):
-    #print(dr.mean(dr.sqr(image - image_ref)))
-    return dr.mean(dr.sqr(image - image_ref))
-
-#base_colorの最適化
-def optimize_bc(scene_params, steps, lr = 0.01):
-    
-    bitmap_ref = mi.Bitmap('basecolor_ref_another/'+ file_name + '_ref.png').convert(mi.Bitmap.PixelFormat.RGB, mi.Struct.Type.Float32, srgb_gamma=False)
-    image_ref = dr.cuda.ad.TensorXf(bitmap_ref)
-    
-    opt = mi.ad.Adam(lr = lr)
-    
-    #初期値のセット
-    opt['bsdf-matpreview.base_color.value'] = scene_params['bsdf-matpreview.base_color.value']
-    #scene_params.keep(["bsdf-matpreview.base_color.value"])
-    scene_params.update(opt)
-    
-    for step in range(steps):
-        
-        image = mi.render(scene, scene_params, spp=4)
-        
-        loss = mse_image(image, image_ref)
-        
-        dr.backward(loss)
-        
-        opt.step()
-        
-        opt['bsdf-matpreview.base_color.value'] = dr.clamp(opt['bsdf-matpreview.base_color.value'], 0.0, 1.0)
-        
-        scene_params.update(opt)
-        
-        print('Iteration:', step)
-        print('bsdf-matpreview.base_color.value',  opt['bsdf-matpreview.base_color.value'])
-        print("loss:", loss)
-        print()
-        
-    #scene_params.update(opt)
-    
-    image_final = mi.render(scene, spp=512)
-    mi.util.convert_to_bitmap(image_final)
-
-    # matplotlibの設定と画像表示
-    plt.axis("off")  # 軸を非表示
-    plt.imshow(image_final ** (1.0 / 2.2))  # 画像を表示（sRGBトーンマッピングを近似）
-    plt.show()  # 画像を表示
-    
-    mi.util.write_bitmap("Fitting_Results_another/" + file_name + ".png", image_final)
-    
-#optimize_bc(scene_params, 120)
-
-'''

@@ -1,0 +1,14 @@
+{
+    "name": "C17_rlm71",
+    "base_color.value": [
+        0.059759745435890396,
+        0.06062017368357382,
+        0.04571295082170662
+    ],
+    "metallic.value": 0.36836719512939453,
+    "roughness.value": 0.44072312116622925,
+    "specular": 0.3731015622615814,
+    "clearcoat.value": 0.37672239542007446,
+    "clearcoat_gloss.value": 0.3809220790863037,
+    "matallic_type": 0
+}

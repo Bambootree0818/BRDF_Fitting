@@ -1,0 +1,14 @@
+{
+    "name": "C4_Yellow",
+    "base_color.value": [
+        0.9946629860953852,
+        0.5974284594846767,
+        -0.04741718828320815
+    ],
+    "metallic.value": 0.35754629969596863,
+    "roughness.value": 0.39731737971305847,
+    "specular": 0.3800663650035858,
+    "clearcoat.value": 0.38216260075569153,
+    "clearcoat_gloss.value": 0.38350728154182434,
+    "matallic_type": 0
+}

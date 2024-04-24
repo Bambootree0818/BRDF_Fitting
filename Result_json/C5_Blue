@@ -1,0 +1,14 @@
+{
+    "name": "C5_Blue",
+    "base_color.value": [
+        -0.035815678296221246,
+        0.07275439533870252,
+        0.38587338233361324
+    ],
+    "metallic.value": 0.3624343276023865,
+    "roughness.value": 0.36156681180000305,
+    "specular": 0.3763509690761566,
+    "clearcoat.value": 0.37998563051223755,
+    "clearcoat_gloss.value": 0.3831729590892792,
+    "matallic_type": 0
+}

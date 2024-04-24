@@ -1,0 +1,14 @@
+{
+    "name": "Char_Red",
+    "base_color.value": [
+        0.18255936777027582,
+        0.018385905813576076,
+        0.043458319865798234
+    ],
+    "metallic.value": 0.36525335907936096,
+    "roughness.value": 0.4172041714191437,
+    "specular": 0.3745095729827881,
+    "clearcoat.value": 0.378395140171051,
+    "clearcoat_gloss.value": 0.3821994662284851,
+    "matallic_type": 0
+}

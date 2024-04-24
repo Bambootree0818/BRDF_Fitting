@@ -1,0 +1,14 @@
+{
+    "name": "C32_WarshipColor2",
+    "base_color.value": [
+        0.11112287256890804,
+        0.12348410941184586,
+        0.124267843769654
+    ],
+    "metallic.value": 0.36473768949508667,
+    "roughness.value": 0.44927355647087097,
+    "specular": 0.3737279772758484,
+    "clearcoat.value": 0.3769018352031708,
+    "clearcoat_gloss.value": 0.3808825612068176,
+    "matallic_type": 0
+}
