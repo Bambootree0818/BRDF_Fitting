@@ -49,3 +49,6 @@
 推定したマテリアルをレンダリングし、手軽に確認できるアプリ(COATING SEEKER)の作成にはUnreal Engine 5を使用しました。jsonに保存したPrincipled BRDFパラメータをUnreal Engine 5のマテリアルシステムに流し込み、確認用の3Dモデルに適用させています。
 
 ユーザーはリストから任意の塗料を選択することで手軽にその色と質感を確認できます。
+
+https://github.com/Bambootree0818/BRDF_Fitting/assets/137160764/99c9bdb0-07f9-4b36-8090-d7192946f509
+
